@@ -1,0 +1,26 @@
+00 - NOP
+01 - HLT
+02 - MOV R0, R1
+03 - MOV R0, R2
+04 - MOV R0, R3
+05 - MOV R1, R0
+06 - MOV R1, R2
+07 - MOV R1, R3
+08 - MOV R2, R0
+09 - MOV R2, R1
+0A - MOV R2, R3
+0B - MOV R3, R0
+0C - MOV R3, R1
+0D - MOV R3, R2
+0E - MOV R0, ##
+0F - MOV R1, ##
+10 - MOV R2, ##
+11 - MOV R3, ##
+12 - LD R0, ##
+13 - LD R1, ##
+14 - LD R2, ##
+15 - LD R3, ##
+16 - ST ##, R0
+17 - ST ##, R1
+18 - ST ##, R2
+19 - ST ##, R3
