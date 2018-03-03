@@ -20,7 +20,7 @@ micro_instruction:
   - R3_OE
   - AR0_LD
   - AR1_LD
-  - ALU_AS_LD
+  - ALU_AS_OE
   - F_SEL_A0
   - MR
   - T_ST_MR
@@ -170,7 +170,7 @@ opcode_def:
       - T_ST_MR
   # Direct mem store from reg
   # 16 - ST B, R0
-  - alias: LD_B_R0
+  - alias: ST_B_R0
     def:
       - IP_OE | ALE | IP_INC
       - T_W
@@ -178,7 +178,7 @@ opcode_def:
       - R0_OE | WR
       - T_ST_MR
   # 17 - ST B, R1
-  - alias: LD_B_R1
+  - alias: ST_B_R1
     def:
       - IP_OE | ALE | IP_INC
       - T_W
@@ -186,7 +186,7 @@ opcode_def:
       - R1_OE | WR
       - T_ST_MR
   # 18 - ST B, R2
-  - alias: LD_B_R2
+  - alias: ST_B_R2
     def:
       - IP_OE | ALE | IP_INC
       - T_W
@@ -194,10 +194,64 @@ opcode_def:
       - R2_OE | WR
       - T_ST_MR
   # 19 - ST B, R3
-  - alias: LD_B_R3
+  - alias: ST_B_R3
     def:
       - IP_OE | ALE | IP_INC
       - T_W
       - RD | ALE
       - R3_OE | WR
+      - T_ST_MR
+  # Flow control
+  # 1A - JMP B
+  - alias: JMP_B
+    def:
+      - IP_OE | ALE
+      - T_W
+      - IP_LD | RD
+      - T_ST_MR
+  # Arithmatic instructions
+  # 1B - ADD R0, B
+  - alias: ADD_R0_B
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R0_OE
+      - R0_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1C - ADD R1, B
+  - alias: ADD_R1_B
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R1_OE
+      - R1_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1D - ADD R2, B
+  - alias: ADD_R2_B
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R2_OE
+      - R2_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1E - ADD R2, B
+  - alias: ADD_R2_B
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R2_OE
+      - R2_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1C - ADD R3, B
+  - alias: ADD_R3_B
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R3_OE
+      - R3_LD | ALU_AS_OE
       - T_ST_MR
