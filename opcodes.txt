@@ -25,3 +25,7 @@
 18 - ST B, R2
 19 - ST B, R3
 1A - JMP B
+1B - ADD R0, B
+1C - ADD R1, B
+1D - ADD R2, B
+1E - ADD R3, B

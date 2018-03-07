@@ -237,16 +237,7 @@ opcode_def:
       - AR0_LD | R2_OE
       - R2_LD | ALU_AS_OE
       - T_ST_MR
-  # 1E - ADD R2, B
-  - alias: ADD_R2_B
-    def:
-      - IP_OE | ALE | IP_INC
-      - T_W
-      - AR1_LD | RD
-      - AR0_LD | R2_OE
-      - R2_LD | ALU_AS_OE
-      - T_ST_MR
-  # 1C - ADD R3, B
+  # 1E - ADD R3, B
   - alias: ADD_R3_B
     def:
       - IP_OE | ALE | IP_INC
