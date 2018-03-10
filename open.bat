@@ -1,1 +1,0 @@
-start javaw -jar D:\Work\tools\circuit_simulators\logisim-evolution.jar -questa no SYN.circ

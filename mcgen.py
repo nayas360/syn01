@@ -6,7 +6,7 @@ from ruamel.yaml import YAML as yaml
 # tries to generate code for cpu logic rom for given yml configuration
 class RomMicroCodeGenerator:
     RAW_HEADER = 'v2.0 raw'
-    ROM_VER = 'rom_version'
+    CPU_VER = 'cpu_version'
     ROM_ADDR_W = 'rom_address_width'
     ROM_D_W = 'rom_data_width'
     MAX_TS = 'max_tstates'
@@ -22,7 +22,7 @@ class RomMicroCodeGenerator:
         with open(config_file) as f:
             yaml_decoder = yaml()
             self.config = yaml_decoder.load(f)
-        self.rom_version = self.config[self.ROM_VER]
+        self.cpu_version = self.config[self.CPU_VER]
         self.rom_addr_w = self.config[self.ROM_ADDR_W]
         self.rom_d_w = self.config[self.ROM_D_W]
         self.max_ts = self.config[self.MAX_TS]
@@ -54,9 +54,9 @@ class RomMicroCodeGenerator:
                 self.rom_banks[i].append(str(self.max_ts - (len(self.fc) + len(op[self.OPD_DEF]))) + '*0' + '\n')
 
     # generates the rom from the generated rom banks
-    def generate(self, prefix=None):
-        if not prefix:
-            prefix = self.rom_version
+    def generate(self, prefix=''):
+        if prefix == '':
+            prefix = self.cpu_version
         for i in range(len(self.rom_banks)):
             with open(prefix + '_' + str(i) + '.rom', 'w') as f:
                 s = '\n'.join([i.strip() for i in ' '.join(self.rom_banks[i]).split('\n')])[:-1]
@@ -88,11 +88,8 @@ if __name__ == '__main__':
     )
     parser.add_argument('filename', type=str,
                         help='the configuration filename')
-    parser.add_argument('-o', '--prefix', type=str,
+    parser.add_argument('-o', '--prefix', type=str, default='',
                         help='set the rom filename prefix')
     args = parser.parse_args()
     rmcg = RomMicroCodeGenerator(args.filename)
-    if args.prefix:
-        rmcg.generate(args.prefix)
-    else:
-        rmcg.generate()
+    rmcg.generate(args.prefix)
