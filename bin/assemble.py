@@ -142,4 +142,14 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     a = Assembler(args.config)
-    a.generate(args.source, args.prefix)
+    try:
+        a.generate(args.source, args.prefix)
+    except Exception as e:
+        pos = e.source_pos.idx
+        with open(args.source)as f:
+            s = ''.join(f.readlines())
+        l = [i for i in s]
+        l.insert(pos - 1, '>')
+        l.insert(pos + 1, '<')
+        s = ''.join(l)
+        print("error: there was a parsing error at {}\n{}".format(pos, s))
