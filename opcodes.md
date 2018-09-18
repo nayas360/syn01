@@ -1,3 +1,13 @@
+## SYN_01 ISA
+
+This file contains the exhaustive list of instructions
+supported by this processor. The format is as follows:
+
+```
+HEX CODE - INSTRUCTION FORMAT
+```
+NOTE: `B` stands for a byte data
+
 00 - NOP
 01 - HLT
 02 - MOV R0, R1
