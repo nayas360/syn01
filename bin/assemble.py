@@ -107,8 +107,8 @@ class Assembler:
                     if m:
                         self.ram.append(m[0][2:])
 
-    def generate(self, source, prefix=''):
-        with open(source) as f:
+    def generate(self, sourcefile, prefix=''):
+        with open(sourcefile) as f:
             source = ''.join(f.readlines())
 
         source = self._pass1(source)
@@ -117,7 +117,7 @@ class Assembler:
         # print(self.ram)
 
         if prefix == '':
-            prefix = source + '.hex'
+            prefix = sourcefile + '.hex'
         with open(prefix, 'w') as f:
             print(self.RAW_HEADER, file=f)
             for i in range(len(self.ram)):

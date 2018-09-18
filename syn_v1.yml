@@ -1,0 +1,334 @@
+# the version of the cpu the config is for
+cpu_version: 'syn_01'
+# the width of the micro code logic rom address
+rom_address_width: 12
+# the width of the micro code logic rom data
+rom_data_width: 24
+# the max number of T-states allowed per instruction
+max_tstates: 16
+# the width of the micro code logic ram address
+ram_address_width: 8
+# the width of the micro code logic ram data
+ram_data_width: 8
+# the list of symbols for micro code instructions
+# generally corresponds to a signal output from the micro code logic rom
+micro_instruction:
+  - HLT_EN
+  - IDR_LD
+  - IP_LD
+  - IP_OE
+  - IP_INC
+  - MAR_LD
+  - MAR_OE
+  - R0_LD
+  - R0_OE
+  - R1_LD
+  - R1_OE
+  - R2_LD
+  - R2_OE
+  - R3_LD
+  - R3_OE
+  - AR0_LD
+  - AR1_LD
+  - ALU_AS_OE
+  - F_SEL_A0
+  - MR
+  - T_ST_MR
+  - RD
+  - WR
+  - ALE
+# the definition of the fetch cycle in terms of the above declared symbols
+fetch_cycle_def:
+  - IP_OE | ALE
+  - T_W
+  - RD | IDR_LD | IP_INC
+# the definition for instructions supported
+# alias is the name for the opcode
+# as_regex parameter defines the regular expression to be used by the assembler
+# def definition of the instruction in terms of micro code
+# T_W is a special micro code that introduces a wait state automatically
+opcode_def:
+  # 00 - No Operation
+  - alias: NOP
+    as_regex: "NOP"
+    num_args: 0
+    def:
+      - T_W
+      - T_ST_MR
+  # 01 - Halt
+  - alias: HLT
+    as_regex: "HLT"
+    num_args: 0
+    def:
+      - HLT_EN
+  # Register Transfers
+  # 02 - MOV R0, R1 - copy data from R1 to R0
+  - alias: MOV_R0_R1
+    as_regex: "MOV R0__SEP__R1"
+    num_args: 0
+    def:
+      - R0_LD | R1_OE
+      - T_ST_MR
+  # 03 - MOV R0, R2
+  - alias: MOV_R0_R2
+    as_regex: "MOV R0__SEP__R2"
+    num_args: 0
+    def:
+      - R0_LD | R2_OE
+      - T_ST_MR
+  # 04 - MOV R0, R3
+  - alias: MOV_R0_R3
+    as_regex: "MOV R0__SEP__R3"
+    num_args: 0
+    def:
+      - R0_LD | R3_OE
+      - T_ST_MR
+  # 05 - MOV R1, R0
+  - alias: MOV_R1_R0
+    as_regex: "MOV R1__SEP__R0"
+    num_args: 0
+    def:
+      - R1_LD | R0_OE
+      - T_ST_MR
+  # 06 - MOV R1, R2
+  - alias: MOV_R1_R2
+    as_regex: "MOV R1__SEP__R2"
+    num_args: 0
+    def:
+      - R1_LD | R2_OE
+      - T_ST_MR
+  # 07 - MOV R1, R3
+  - alias: MOV_R1_R3
+    as_regex: "MOV R1__SEP__R3"
+    num_args: 0
+    def:
+      - R1_LD | R3_OE
+      - T_ST_MR
+  # 08 - MOV R2, R0
+  - alias: MOV_R2_R0
+    as_regex: "MOV R2__SEP__R0"
+    num_args: 0
+    def:
+      - R2_LD | R0_OE
+      - T_ST_MR
+  # 09 - MOV R2, R1
+  - alias: MOV_R2_R1
+    as_regex: "MOV R2__SEP__R1"
+    num_args: 0
+    def:
+      - R2_LD | R1_OE
+      - T_ST_MR
+  # 0A - MOV R2, R3
+  - alias: MOV_R2_R3
+    as_regex: "MOV R2__SEP__R3"
+    num_args: 0
+    def:
+      - R2_LD | R3_OE
+      - T_ST_MR
+  # 0B - MOV R3, R0
+  - alias: MOV_R3_R0
+    as_regex: "MOV R3__SEP__R0"
+    num_args: 0
+    def:
+      - R3_LD | R0_OE
+      - T_ST_MR
+  # 0C - MOV R3, R1
+  - alias: MOV_R3_R1
+    as_regex: "MOV R3__SEP__R1"
+    num_args: 0
+    def:
+      - R3_LD | R1_OE
+      - T_ST_MR
+  # 0D - MOV R3, R2
+  - alias: MOV_R3_R2
+    as_regex: "MOV R3__SEP__R2"
+    num_args: 0
+    def:
+      - R3_LD | R2_OE
+      - T_ST_MR
+  # Immediate mode register loading
+  # 0E - MOV R0, B
+  - alias: MOV_R0_B
+    as_regex: "MOV R0__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - R0_LD | RD
+      - T_ST_MR
+  # 0F - MOV R1, B
+  - alias: MOV_R1_B
+    as_regex: "MOV R1__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - R1_LD | RD
+      - T_ST_MR
+  # 10 - MOV R2, B
+  - alias: MOV_R2_B
+    as_regex: "MOV R2__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - R2_LD | RD
+      - T_ST_MR
+  # 11 - MOV R3, B
+  - alias: MOV_R3_B
+    as_regex: "MOV R3__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - R3_LD | RD
+      - T_ST_MR
+  # Direct addressed mode register loading
+  # 12 - LD R0, B
+  - alias: LD_R0_B
+    as_regex: "LD R0__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - T_W
+      - R0_LD | RD
+      - T_ST_MR
+  # 13 - LD R1, B
+  - alias: LD_R1_B
+    as_regex: "LD R1__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - T_W
+      - R1_LD | RD
+      - T_ST_MR
+  # 14 - LD R2, B
+  - alias: LD_R2_B
+    as_regex: "LD R2__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - T_W
+      - R2_LD | RD
+      - T_ST_MR
+  # 15 - LD R3, B
+  - alias: LD_R3_B
+    as_regex: "LD R3__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - T_W
+      - R3_LD | RD
+      - T_ST_MR
+  # Direct mem store from reg
+  # 16 - ST B, R0
+  - alias: ST_B_R0
+    as_regex: "ST __B____SEP__R0"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - R0_OE | WR
+      - T_ST_MR
+  # 17 - ST B, R1
+  - alias: ST_B_R1
+    as_regex: "ST __B____SEP__R1"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - R1_OE | WR
+      - T_ST_MR
+  # 18 - ST B, R2
+  - alias: ST_B_R2
+    as_regex: "ST __B____SEP__R2"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - R2_OE | WR
+      - T_ST_MR
+  # 19 - ST B, R3
+  - alias: ST_B_R3
+    as_regex: "ST __B____SEP__R3"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - RD | ALE
+      - R3_OE | WR
+      - T_ST_MR
+  # Flow control
+  # 1A - JMP B
+  - alias: JMP_B
+    as_regex: "JMP __B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE
+      - T_W
+      - IP_LD | RD
+      - T_ST_MR
+  # Arithmatic instructions
+  # 1B - ADD R0, B
+  - alias: ADD_R0_B
+    as_regex: "ADD R0__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R0_OE
+      - R0_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1C - ADD R1, B
+  - alias: ADD_R1_B
+    as_regex: "ADD R1__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R1_OE
+      - R1_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1D - ADD R2, B
+  - alias: ADD_R2_B
+    as_regex: "ADD R2__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R2_OE
+      - R2_LD | ALU_AS_OE
+      - T_ST_MR
+  # 1E - ADD R3, B
+  - alias: ADD_R3_B
+    as_regex: "ADD R3__SEP____B__"
+    num_args: 1
+    def:
+      - IP_OE | ALE | IP_INC
+      - T_W
+      - AR1_LD | RD
+      - AR0_LD | R3_OE
+      - R3_LD | ALU_AS_OE
+      - T_ST_MR
+# symbols in the as_regex that are transformed for working correctly
+as_global_transforms:
+  __B__: "0x[0-9a-fA-F]{1,2}"
+  __SEP__ : "(, |,| )"
+
+# following symbols are treated as the arguments
+is_arg:
+  - __B__
