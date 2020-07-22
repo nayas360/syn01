@@ -2,11 +2,19 @@
 SYN_01 represents my first attempt at designing a processor from discrete logical components in [logisim-evolution](https://github.com/reds-heig/logisim-evolution). The Processor is highly limited in its capabilities, but was a good workout in terms of learning how a very simple processor might be implemented.
 
 ## In Action
-* A simple counter program in action - [simple_counter](programs/syn01_counter.mp4)
-* A program that generates a checker board pattern - [checker](programs/syn01_prog02_ledm_checker.mp4)
+<p align="center">
+  <img width="400" height="300" src="demo/syn01_counter.gif">
+    <p align="center">A simple counter program in action</p>
+  </img>
+</p>
+<p align="center">
+  <img width="400" height="300" src="demo/syn01_prog02_ledm_checker.gif">
+    <p align="center">A program that generates a checker board pattern</p>
+  </img>
+</p>
 
 ## Limitations
-* The fist limitation is in the sense that the processor can access only 256 bytes of memory, and can be regaurded as an 8bit processor under every circumstances.
+* The first limitation is in the sense that the processor can access only 256 bytes of memory, and can be considered as an 8bit processor with respect to both memory and processing.
 * The Instruction set is incomplete and fairly limited in number and usage. There arent a lot of programs that can be written but there are examples in the programs directory of a few possible programs.
 * Since the project uses a lot of modules, simulation becomes very very slow.
 * The assembler is really really bad.
